@@ -12,6 +12,7 @@ interface Product {
   category: string
   price: number
   description: string
+  image_url: string | null
 }
 
 export default function ProductosClient() {
@@ -146,7 +147,20 @@ export default function ProductosClient() {
                     {/* Image container */}
                     <div className="relative aspect-[4/3] overflow-hidden bg-secondary mb-5">
                       <div className="w-full h-full bg-gradient-to-br from-secondary to-background flex items-center justify-center">
-                        <span className="text-muted-foreground text-sm">Imagen no disponible</span>
+                        {product.image_url ? (
+                        <img
+                          src={product.image_url}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            // Si la imagen no carga, muestra el placeholder
+                            e.currentTarget.style.display = "none";
+                            e.currentTarget.nextElementSibling?.classList.remove(
+                              "hidden",
+                            );
+                          }}
+                        />
+                      ) : null}
                       </div>
                       {/* Hover overlay */}
                       <div className="absolute inset-0 bg-background/0 group-hover:bg-background/20 transition-colors flex items-center justify-center">
